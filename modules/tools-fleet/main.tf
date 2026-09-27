@@ -21,7 +21,7 @@
 
 resource "aws_security_group" "hosts" {
   name        = "${local.name}-hosts"
-  description = "The team tools' servers: reached by the private load balancer only."
+  description = "The team tools servers: reached by the private load balancer only."
   vpc_id      = local.vpc_id
 
   tags = { Name = "${local.name}-hosts" }
