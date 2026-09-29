@@ -5,14 +5,6 @@
 # images, the schedule and the RDS bundle's checksum from tools/.
 # ------------------------------------------------------------------------------
 
-data "aws_ssm_parameter" "platform" {
-  name = "/${var.project_name}/platform/config"
-}
-
-locals {
-  schedule = jsondecode(file("${path.module}/../../tools/schedule.json")).development
-}
-
 module "tools" {
   source = "../../modules/tools-fleet"
 

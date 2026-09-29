@@ -9,6 +9,7 @@ The team's own tools (DbGate, CloudBeaver) on core's platform. A blueprint: noth
 - Images are pinned in `tools/images.json`, never `:latest`. The schedule is `tools/schedule.json`, read by both Terraform and `scripts/ci/start-tools.sh`.
 - No password is stored anywhere: DbGate `askUser`, CloudBeaver saves none. The CloudBeaver administrator is random per start, root-only on the server.
 - The start-up script must stay under EC2's 16 KB of user data (the module refuses more); large files (the RDS bundle) are downloaded and checked, never embedded.
+- File layout: every top-level `locals` block in `locals.tf`, every `data` block in `data.tf`. Workflows run on `ubuntu-24.04`, never `ubuntu-latest`. `scripts/ci/check-file-layout.sh` fails CI otherwise.
 
 ## Environments
 
@@ -20,6 +21,7 @@ The tools run in the environments listed in `.github/environments.json` (any of 
 terraform fmt -check -recursive
 (cd modules/tools-fleet && terraform init -backend=false && terraform test)
 bash scripts/ci/tests/run-all.sh
+bash scripts/ci/check-file-layout.sh .
 shellcheck -S warning scripts/*.sh scripts/ci/*.sh
 for e in development staging production; do bash scripts/ci/check-lock-files.sh infrastructure/$e; done
 ```
