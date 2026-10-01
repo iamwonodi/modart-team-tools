@@ -4,6 +4,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 F="${SCRIPTS}/fetch-role-arn.sh"
 ARNS="${WORK}/role-arns.json"
 export FAKE_GH_ROLE_ARNS_FILE="${ARNS}" FAKE_GH_LOG="${WORK}/gh.log"
+# The tests use their own environment list, not the repository's (a project may run only some).
+echo '["development","staging","production"]' > "${WORK}/environments.json"
+export ENVIRONMENTS_FILE="${WORK}/environments.json"
 run(){ : > "${FAKE_GH_LOG}"; bash "$F" --core acme/core --repo acme/team-tools "$@"; }
 
 echo "== fetch-role-arn.sh"
